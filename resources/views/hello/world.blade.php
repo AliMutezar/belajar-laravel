@@ -8,6 +8,5 @@
 </head>
 <body>
     <h1>This is my world {{$nama}}</h1>
-    
 </body>
 </html>

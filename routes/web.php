@@ -39,3 +39,35 @@ Route::get('/hello-again', function() {
 Route::get('/hello-world', function() {
     return view('hello.world', ['nama' => 'Fulan bin Fulan']);
 });
+
+
+// Route Parameter
+Route::get('/products/{id}', function ($productId){
+    return "Product $productId";
+});
+
+Route::get('/products/{product}/items/{item}', function($productId, $itemId) {
+    return "Product $productId, Item $itemId"; 
+});
+
+
+// Where(parameter, [regex])
+Route::get('/categories/{id}', function($categoryId) {
+    return "Category $categoryId";
+})->where('id', '[0-9]+');
+
+
+// Route Parameter Optional, cukup tambahkan ? tetapi harus set default value di closure function
+Route::get('/users/{id?}', function($userId = '404') {
+    return "User $userId";
+});
+
+
+// Route conflict tidak akan error, tetapi mempriotiaskan route yang paling pertama di load (paling atas)
+Route::get('/conflict/{name}', function($name) {
+    return "Conflict $name";
+});
+
+Route::get('/conflict/ali', function() {
+    return "Conflict Ahmad Ali Mutezar";
+});

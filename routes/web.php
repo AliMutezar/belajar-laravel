@@ -86,4 +86,5 @@ Route::get('/produk-redirect/{id}', function($id) {
 
 
 // Controller Registration Route
-Route::get('/controller/hello/{name}', [App\Http\Controllers::class, 'hello']);
+Route::get('/controller/hello/request', [\App\Http\Controllers\HelloController::class, 'request']);
+Route::get('/controller/hello/{name}', [\App\Http\Controllers\HelloController::class, 'hello']);

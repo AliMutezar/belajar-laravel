@@ -29,3 +29,13 @@ Route::redirect('/youtube', '/pzn');
 Route::fallback(function() {
     return '404 by Programmer Zaman Now';
 });
+
+Route::view('/hello', 'hello', ['nama' => 'Ahmad Ali Mutezar']);
+
+Route::get('/hello-again', function() {
+    return view('hello', ['nama' => 'Sahira Salsabila']);
+});
+
+Route::get('/hello-world', function() {
+    return view('hello.world', ['nama' => 'Fulan bin Fulan']);
+});

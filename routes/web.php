@@ -154,3 +154,8 @@ Route::get('/middleware/group', function() {
 Route::get('/middleware/api', function() {
         return "OK";
 })->middleware(['contoh:PZN, 401']);
+
+
+// CSRF
+Route::get('/form', [App\Http\Controllers\FormController::class, 'form']);
+Route::post('/form', [App\Http\Controllers\FormController::class, 'submitForm']);

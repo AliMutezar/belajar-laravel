@@ -7,7 +7,7 @@
     <title>Laravel Dasar - View</title>
 </head>
 <body>
-    <h1>Hello {{$nama}}</h1>
+    <h1>Hello {{$name}}</h1>
     
 </body>
 </html>

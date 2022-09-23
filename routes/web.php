@@ -105,7 +105,8 @@ Route::post('/input/filter/exept', [\App\Http\Controllers\InputController::class
 Route::post('/input/filter/merge', [\App\Http\Controllers\InputController::class, 'filterMerge']);
 
 // Upload
-Route::post('/file/upload', [\App\Http\Controllers\FileController::class, 'upload']);
+Route::post('/file/upload', [\App\Http\Controllers\FileController::class, 'upload'])
+    ->withoutMiddleware(App\Http\Middleware\VerifyCsrfToken::class);
 
 
 // Response
@@ -132,3 +133,24 @@ Route::get('/redirect/name/{name}', [\App\Http\Controllers\RedirectController::c
 Route::get('/redirect/action', [\App\Http\Controllers\RedirectController::class, 'redirectAction']);
 Route::get('/redirect/away', [\App\Http\Controllers\RedirectController::class, 'redirectAway']);
 
+// Middleware Route
+// Route::get('/middleware/api', function() {
+//     return "OK";
+// })->middleware([\App\Http\Middleware\ContohMiddleWare::class]);
+
+// bisa juga meregistrasikan middleware per route dengan alias
+Route::get('/middleware/api', function() {
+    return "OK";
+})->middleware(["contoh"]);
+
+
+// Middleware Group
+Route::get('/middleware/group', function() {
+    return "GROUP PZN";
+})->middleware(["pzn"]);
+
+
+// Middleware Paramater
+Route::get('/middleware/api', function() {
+        return "OK";
+})->middleware(['contoh:PZN, 401']);

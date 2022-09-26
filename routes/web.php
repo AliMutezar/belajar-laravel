@@ -112,16 +112,29 @@ Route::post('/file/upload', [\App\Http\Controllers\FileController::class, 'uploa
 // Response
 Route::get('/response/hello', [\App\Http\Controllers\ResponseController::class, 'response']);
 Route::get('/response/header', [\App\Http\Controllers\ResponseController::class, 'header']);
-Route::get('/response/type/view', [\App\Http\Controllers\ResponseController::class, 'responseView']);
-Route::get('/response/type/json', [\App\Http\Controllers\ResponseController::class, 'responseJson']);
-Route::get('/response/type/file', [\App\Http\Controllers\ResponseController::class, 'responseFile']);
-Route::get('/response/type/download', [\App\Http\Controllers\ResponseController::class, 'responseDownload']);
 
 
-// Cookie
-Route::get('/cookie/set', [\App\Http\Controllers\CookieController::class, 'createCookie']);
-Route::get('/cookie/get', [\App\Http\Controllers\CookieController::class, 'getCookie']);
-Route::get('/cookie/clear', [\App\Http\Controllers\CookieController::class, 'clearCookie']);
+// Group Route
+Route::prefix('/response/type')->group(function() {
+    Route::get('/view', [\App\Http\Controllers\ResponseController::class, 'responseView']);
+    Route::get('/json', [\App\Http\Controllers\ResponseController::class, 'responseJson']);
+    Route::get('/file', [\App\Http\Controllers\ResponseController::class, 'responseFile']);
+    Route::get('/download', [\App\Http\Controllers\ResponseController::class, 'responseDownload']);
+});
+
+
+// Cookie Controller Single
+// Route::get('/cookie/set', [\App\Http\Controllers\CookieController::class, 'createCookie']);
+// Route::get('/cookie/get', [\App\Http\Controllers\CookieController::class, 'getCookie']);
+// Route::get('/cookie/clear', [\App\Http\Controllers\CookieController::class, 'clearCookie']);
+
+
+// Cokkie Controller Group
+Route::controller(\App\Http\Controllers\CookieController::class)->group(function(){
+    Route::get('/cookie/set', 'createCookie');
+    Route::get('/cookie/get', 'getCookie');
+    Route::get('/cookie/clear', 'clearCookie');
+});
 
 
 // Redirect
@@ -132,6 +145,17 @@ Route::get('/redirect/name/{name}', [\App\Http\Controllers\RedirectController::c
     ->name('redirect-hello');
 Route::get('/redirect/action', [\App\Http\Controllers\RedirectController::class, 'redirectAction']);
 Route::get('/redirect/away', [\App\Http\Controllers\RedirectController::class, 'redirectAway']);
+
+
+
+//URL Generation with named route, ada 3 cara buat manggilnya
+Route::get('/redirect/named', function(){
+    return route('redirect-hello', ['name' => 'Ali']);
+    // return url()->route('redirect-hello', ['name' => 'Ali']);
+    // return \Illuminate\Support\Facades\URL::route('redirect-hello', ['name' => 'Ali']);
+});
+
+
 
 // Middleware Route
 // Route::get('/middleware/api', function() {
@@ -145,17 +169,46 @@ Route::get('/middleware/api', function() {
 
 
 // Middleware Group
-Route::get('/middleware/group', function() {
-    return "GROUP PZN";
-})->middleware(["pzn"]);
+// Route::get('/middleware/group', function() {
+//     return "GROUP PZN";
+// })->middleware(["pzn"]);
 
 
-// Middleware Paramater
-Route::get('/middleware/api', function() {
-        return "OK";
-})->middleware(['contoh:PZN, 401']);
+// // Middleware Paramater
+// Route::get('/middleware/api', function() {
+//         return "OK";
+// })->middleware(['contoh:PZN, 401']);
+
+
+// Bisa pake middleware yang single, atau yang middleware group seperti dibawah ini
+// Middleware Group
+Route::middleware(['contoh:PZN, 401'])->prefix('/middleware')->group(function() {
+    Route::get('/group', function() {
+        return "GROUP PZN";
+    })->middleware(["pzn"]);
+
+
+    Route::get('/api', function() {
+            return "OK";
+    })->middleware(['contoh:PZN, 401']);
+});
 
 
 // CSRF
 Route::get('/form', [App\Http\Controllers\FormController::class, 'form']);
 Route::post('/form', [App\Http\Controllers\FormController::class, 'submitForm']);
+
+
+
+// URL Generation Controller Action
+Route::get('/url/action', function(){
+    return action([\App\Http\Controllers\FormController::class, 'form'], []);
+    return url()->action([\App\Http\Controllers\FormController::class, 'form'], []);
+    return \Illuminate\Support\Facades\URL::action([\App\Http\Controllers\FormController::class, 'form'], []);
+});
+
+
+// URL Generation
+Route::get('/url/current', function() {
+    return \Illuminate\Support\Facades\URL::full();
+});

@@ -31,7 +31,7 @@ class ResponseControllerTest extends TestCase
     public function testView()
     {
         $this->get('/response/type/view')
-            ->assertSeeText("hello Ahmad Ali Mutezar");
+            ->assertSeeText("Hello Ahmad Ali Mutezar");
     }
 
 

@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -22,7 +23,7 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
-        //
+        ValidationException::class
     ];
 
     /**
@@ -43,8 +44,21 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
+
+        // reportbale bisa lebih dari satu, tetapi jika yg dijalankan hanya 1 saja. maka bisa direturn false agar code yang dibawahnya tidak dijalankan
         $this->reportable(function (Throwable $e) {
-            //
+            // code untuk kirim report ke slack, email atau yg lain
+
+            // var_dump($e);
+            // return false;
+        });
+
+        // $this->reportable(function (Throwable $e) {
+        //     var_dump($e);
+        // });
+
+        $this->renderable(function (ValidationException $exception, Request $request){ 
+            return response("Bad Request", 400);
         });
     }
 }

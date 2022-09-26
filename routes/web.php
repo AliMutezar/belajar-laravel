@@ -212,3 +212,8 @@ Route::get('/url/action', function(){
 Route::get('/url/current', function() {
     return \Illuminate\Support\Facades\URL::full();
 });
+
+
+// Session
+Route::get('/session/create', [\App\Http\Controllers\SessionController::class, 'createSession']);
+Route::get('/session/get', [\App\Http\Controllers\SessionController::class, 'getSession']);
